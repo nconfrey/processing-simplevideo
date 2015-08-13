@@ -117,6 +117,11 @@ public class SimpleVideo {
         }   
       }   
     }
+    
+    public static void pipelineLaunch(String pipe)
+    {
+    	gstreamer_pipeline_launch(pipe);
+    }
 
 	private static native boolean gstreamer_init();
 	private native boolean gstreamer_register();	
@@ -126,5 +131,7 @@ public class SimpleVideo {
 	private native void gstreamer_set_loop(long handle, boolean loop);
 	private native float gstreamer_get_duration(long handle);
 	private native float gstreamer_get_time(long handle);
+	
+	private static native void gstreamer_pipeline_launch(String pipe);
 
 }

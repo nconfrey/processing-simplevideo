@@ -17,6 +17,14 @@ JNIEXPORT jboolean JNICALL Java_processing_simplevideo_SimpleVideo_gstreamer_1in
 
 /*
  * Class:     processing_simplevideo_SimpleVideo
+ * Method:    gstreamer_register
+ * Signature: ()Z
+ */
+JNIEXPORT jboolean JNICALL Java_processing_simplevideo_SimpleVideo_gstreamer_1register
+  (JNIEnv *, jobject);
+
+/*
+ * Class:     processing_simplevideo_SimpleVideo
  * Method:    gstreamer_loadFile
  * Signature: (Ljava/lang/String;)J
  */
@@ -62,6 +70,14 @@ JNIEXPORT jfloat JNICALL Java_processing_simplevideo_SimpleVideo_gstreamer_1get_
  */
 JNIEXPORT jfloat JNICALL Java_processing_simplevideo_SimpleVideo_gstreamer_1get_1time
   (JNIEnv *, jobject, jlong);
+
+/*
+ * Class:     processing_simplevideo_SimpleVideo
+ * Method:    gstreamer_pipeline_launch
+ * Signature: (Ljava/lang/String;)V
+ */
+JNIEXPORT void JNICALL Java_processing_simplevideo_SimpleVideo_gstreamer_1pipeline_1launch
+  (JNIEnv *, jclass, jstring);
 
 #ifdef __cplusplus
 }

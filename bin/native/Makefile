@@ -21,7 +21,7 @@ endif
 #CFLAGS += -I/Library/Frameworks/GStreamer.framework/Headers
 
 
-LDFLAGS := -shared -z defs
+LDFLAGS := -shared #-z defs
 ifeq ($(PLATFORM),Linux)
 	LDFLAGS += -lgstreamer-1.0 -lgobject-2.0 -lglib-2.0 -pthread -lgstapp-1.0
 endif
