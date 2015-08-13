@@ -17,7 +17,7 @@ JNIEXPORT void JNICALL Java_processing_simplevideo_SimpleVideo_gstreamer_1pipeli
 {
 	//First, we need to convert the JNI string to a char*
     const char *inCStr = (*env)->GetStringUTFChars(env, launch, NULL);
-    if(inCStr == NULL) return -1; //error check
+    //if(inCStr == NULL) return -1; //error check
     //printf("In C, the received string is: %s\n", inCStr);
 
     GstElement *pipeline;
@@ -57,13 +57,16 @@ JNIEXPORT jboolean JNICALL Java_processing_simplevideo_SimpleVideo_gstreamer_1in
 		g_error_free(err);
 		return FALSE;
 	}
-
+	
+	//Nick's test
 	printf("about to janky test pipe launch");
-	gst_parse_launch("videotestsrc ! autovideosink", &err);
-    /* Start playing */
-    //gst_element_set_state (pipeline, GST_STATE_PLAYING);
+	GstElement *pipeline = gst_parse_launch("audiotestsrc ! autoaudiosink", &err);
+    gst_element_set_state (pipeline, GST_STATE_PLAYING);
 
 	thread = g_thread_new("simplevideo-mainloop", simplevideo_mainloop, NULL);
+    
+
+	//thread = g_thread_new("simplevideo-mainloop", simplevideo_mainloop, NULL);
 	return TRUE;
 }
 
@@ -303,9 +306,12 @@ JNIEXPORT jlong JNICALL Java_processing_simplevideo_SimpleVideo_gstreamer_1loadF
 	}
 	
     /* create a new pipeline */
-    gchar *descr = g_strdup_printf ("uridecodebin uri=%s ! videoconvert ! videoscale ! "
-                                    " appsink name=sink caps=\"" CAPS "\"", uri);                                     
+    
+    //THIS IS THE ORIGINAL ONE
+    //gchar *descr = g_strdup_printf ("uridecodebin uri=%s ! videoconvert ! videoscale ! "
+    //                                " appsink name=sink caps=\"" CAPS "\"", uri);                                     
     g_free(uri);
+    gchar *descr = g_strdup_printf ("videotestsrc ! autovideosink");
     (*env)->ReleaseStringUTFChars(env, _fn, fn);
     
     v->play = gst_parse_launch (descr, &error);
@@ -443,5 +449,3 @@ JNIEXPORT jfloat JNICALL Java_processing_simplevideo_SimpleVideo_gstreamer_1get_
 		return -1.0f;
 	}
 }
-
-int main() {return 0;}
