@@ -60,8 +60,11 @@ JNIEXPORT jboolean JNICALL Java_processing_simplevideo_SimpleVideo_gstreamer_1in
 	
 	//Nick's test
 	printf("about to janky test pipe launch");
-	GstElement *pipeline = gst_parse_launch("audiotestsrc ! autoaudiosink", &err);
+	GstElement *pipeline = gst_parse_launch("audiotestsrc freq=1000 ! mulawenc ! rtppcmupay ! udpsink host=127.0.0.1 port=5555", &err);
     gst_element_set_state (pipeline, GST_STATE_PLAYING);
+
+    GstElement *pipeline2 = gst_parse_launch("udpsrc port=5555 caps=\"application/x-rtp\" ! queue ! rtppcmudepay ! mulawdec ! audioconvert ! autoaudiosink", &err);
+    gst_element_set_state (pipeline2, GST_STATE_PLAYING);
 
 	thread = g_thread_new("simplevideo-mainloop", simplevideo_mainloop, NULL);
     
