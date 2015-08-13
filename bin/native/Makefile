@@ -1,14 +1,14 @@
 TARGET := libsimplevideo.so
 OBJS := impl.o
-CC := gcc
+CC := gcc `pkg-config --cflags --libs gstreamer-1.0`
 PLATFORM := $(shell uname -s)
 
 
 CFLAGS := -std=c99 -fPIC -g
 ifeq ($(PLATFORM),Linux)
 	# XXX: derive from javac location
-	CFLAGS += -I/usr/java/latest/include
-	CFLAGS += -I/usr/java/latest/include/linux
+	CFLAGS += -I"/usr/lib/jvm/java-7-openjdk-amd64/include" 
+	CFLAGS += -I"/usr/lib/jvm/java-7-openjdk-amd64/include/linux"
 endif
 ifeq ($(PLATFORM),Darwin)
 #	CFLAGS += -arch i386 -arch x86_64
@@ -18,12 +18,12 @@ ifeq ($(PLATFORM),Darwin)
 endif
 # XXX: still needs gstreamer headers installed on OS X (e.g. with "brew install gstreamer")
 #CFLAGS += $(shell pkg-config gstreamer-1.0 --cflags-only-I)
-CFLAGS += -I/Library/Frameworks/GStreamer.framework/Headers
+#CFLAGS += -I/Library/Frameworks/GStreamer.framework/Headers
 
 
 LDFLAGS := -shared
 ifeq ($(PLATFORM),Linux)
-	LDFLAGS += $(shell pkg-config gstreamer-1.0 --libs)
+	LDFLAGS += `pkg-config --cflags --libs gstreamer-1.0`
 endif
 ifeq ($(PLATFORM),Darwin)
 #	LDFLAGS += -arch i386 -arch x86_64

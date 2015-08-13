@@ -20,7 +20,7 @@ public class SimpleVideo {
         this.parent = parent; 
 
 		if (!loaded) {
-			//System.out.println(System.getProperty("java.library.path"));
+			System.out.println(System.getProperty("java.library.path"));
 			System.loadLibrary("simplevideo");
 			loaded = true;
 			if (gstreamer_init() == false) {
