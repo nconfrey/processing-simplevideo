@@ -120,6 +120,19 @@ public class SimpleVideo {
     
     public static void pipelineLaunch(String pipe)
     {
+		if (!loaded) {
+			System.out.println(System.getProperty("java.library.path"));
+			System.loadLibrary("simplevideo");
+			loaded = true;
+			if (gstreamer_init() == false) {
+				error = true;
+			}
+		}
+
+		if (error) {
+			throw new RuntimeException("Could not load gstreamer");
+		}
+		
     	gstreamer_pipeline_launch(pipe);
     }
 

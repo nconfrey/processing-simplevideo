@@ -59,17 +59,19 @@ JNIEXPORT jboolean JNICALL Java_processing_simplevideo_SimpleVideo_gstreamer_1in
 	}
 	
 	//Nick's test
-	printf("about to janky test pipe launch");
+	//THIS WORKS
+	/*printf("about to janky test pipe launch");
 	GstElement *pipeline = gst_parse_launch("audiotestsrc freq=1000 ! mulawenc ! rtppcmupay ! udpsink host=127.0.0.1 port=5555", &err);
     gst_element_set_state (pipeline, GST_STATE_PLAYING);
 
-    GstElement *pipeline2 = gst_parse_launch("gst-launch-1.0 udpsrc port=5555 caps=\"application/x-rtp\" ! queue ! rtppcmudepay ! mulawdec ! audioconvert ! autoaudiosink", &err);
+    GstElement *pipeline2 = gst_parse_launch("udpsrc port=5555 caps=\"application/x-rtp\" ! queue ! rtppcmudepay ! mulawdec ! audioconvert ! autoaudiosink", &err);
     gst_element_set_state (pipeline2, GST_STATE_PLAYING);
-
+	*/
 	thread = g_thread_new("simplevideo-mainloop", simplevideo_mainloop, NULL);
     
+    GstElement *pipeline = gst_parse_launch("testvideosrc ! autovideosink", NULL);
+    gst_element_set_state(pipeline, GST_STATE_PLAYING);
 
-	//thread = g_thread_new("simplevideo-mainloop", simplevideo_mainloop, NULL);
 	return TRUE;
 }
 
@@ -310,11 +312,8 @@ JNIEXPORT jlong JNICALL Java_processing_simplevideo_SimpleVideo_gstreamer_1loadF
 	
     /* create a new pipeline */
     
-    //THIS IS THE ORIGINAL ONE
-    //gchar *descr = g_strdup_printf ("uridecodebin uri=%s ! videoconvert ! videoscale ! "
-    //                                " appsink name=sink caps=\"" CAPS "\"", uri);                                     
+    gchar *descr = g_strdup_printf ("uridecodebin uri=%s ! videoconvert ! videoscale ! appsink name=sink caps=\"" CAPS "\"", uri);                                     
     g_free(uri);
-    gchar *descr = g_strdup_printf ("videotestsrc ! autovideosink");
     (*env)->ReleaseStringUTFChars(env, _fn, fn);
     
     v->play = gst_parse_launch (descr, &error);
@@ -345,7 +344,7 @@ JNIEXPORT jlong JNICALL Java_processing_simplevideo_SimpleVideo_gstreamer_1loadF
      * better way is to run a mainloop and catch errors there. */
     ret = gst_element_get_state (v->play, NULL, NULL, 5 * GST_SECOND);
     if (ret == GST_STATE_CHANGE_FAILURE) {
-      g_print ("failed to play the file\n");
+      g_print ("failed to play the file after blocking\n");
       exit (-1);
     }  
     

@@ -4,7 +4,7 @@ PImage frame;
 
 void setup() {
   size(640, 360);
-  video = new SimpleVideo(this, "/home/nc/Desktop/GSoC/GSoC/processing-simplevideo/trailer.webm");
+  video = new SimpleVideo(this, "/home/nc/Desktop/GSoC/GSoC/processing-simplevideo/transit.mov");
   video.loop();
   frameRate(30);
 }
