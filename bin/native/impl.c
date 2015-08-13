@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <jni.h>
 #include <gst/gst.h>
@@ -403,3 +404,5 @@ JNIEXPORT jfloat JNICALL Java_processing_simplevideo_SimpleVideo_gstreamer_1get_
 		return -1.0f;
 	}
 }
+
+int main() {return 0;}

@@ -1,6 +1,6 @@
 TARGET := libsimplevideo.so
 OBJS := impl.o
-CC := gcc `pkg-config --cflags --libs gstreamer-1.0`
+CC := gcc `pkg-config gstreamer-1.0 --cflags`
 PLATFORM := $(shell uname -s)
 
 
@@ -21,9 +21,9 @@ endif
 #CFLAGS += -I/Library/Frameworks/GStreamer.framework/Headers
 
 
-LDFLAGS := -shared
+LDFLAGS := -shared -z defs
 ifeq ($(PLATFORM),Linux)
-	LDFLAGS += `pkg-config --cflags --libs gstreamer-1.0`
+	LDFLAGS += -lgstreamer-1.0 -lgobject-2.0 -lglib-2.0 -pthread -lgstapp-1.0
 endif
 ifeq ($(PLATFORM),Darwin)
 #	LDFLAGS += -arch i386 -arch x86_64
@@ -37,7 +37,7 @@ endif
 
 
 $(TARGET): $(OBJS)
-	$(CC) $(CFLAGS) $(LDFLAGS) $^ -o $@
+	$(CC) $^ -o $@ $(CFLAGS) $(LDFLAGS)
 
 iface.h:
 	javah -classpath .. -o iface.h processing.simplevideo.SimpleVideo
